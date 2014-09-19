@@ -1,4 +1,14 @@
-package com.kai.dynamicProgramming;
+Longest common subsequence problem,
+
+       LCS is to find the longest subsequence common to all sequences in a set of sequences (often just two). (Note that a subsequence is different from a substring, for the terms of the former need not be consecutive terms of the original sequence.) 
+It is a classic computer science problem, the basis of file comparison programs such as diff, and has applications in bioinformatics.
+	
+
+Java Code below is the solution for two sequences(using Dynamic Programming),
+
+
+
+package DynamicProgramming;
 
 /**
  * LCS(i,j) represents the set of LCS of prefixes Xi and Yj
@@ -9,33 +19,66 @@ package com.kai.dynamicProgramming;
 public class LCS {
 
 	public static void main(String[] args) {
-		char[] firstStr = { 'X', 'M', 'J', 'Y', 'A', 'U', 'Z' };
-		char[] secondStr = { 'M', 'Z', 'J', 'A', 'W', 'X','U' };
-		int lcsLength = getLCSLength(firstStr, secondStr);
-		System.out.println("the length of LCS: " + lcsLength);
+
+		char[] firstStr = { ' ', 'X', 'M', 'J', 'Y', 'A', 'U', 'Z' };
+		char[] secondStr = { ' ', 'M', 'Z', 'J', 'A', 'W', 'X', 'U' };
+
+		System.out
+				.println("The length of LCS: "
+						+ getLCSLength(firstStr, secondStr)[firstStr.length - 1][secondStr.length - 1]);
+		System.out.print("The LCS: ");
+		printLCS(getLCSLength(firstStr, secondStr), firstStr, secondStr,
+				firstStr.length - 1, secondStr.length - 1);
 	}
 
-	public static int getLCSLength(char[] firstStr, char[] secondStr) {
+	public static int[][] getLCSLength(char[] firstStr, char[] secondStr) {
+
 		int sizeOfFStr = firstStr.length;
 		int sizeOfSStr = secondStr.length;
 		int[][] lcsLength = new int[sizeOfFStr][sizeOfSStr];
 		// initial status
-		for (int i = 0; i < sizeOfFStr; i++)
-			lcsLength[i][0] = 0; 	
-		for (int j = 0; j < sizeOfSStr; j++)
+		for (int i = 1; i < sizeOfFStr; i++)
+			lcsLength[i][0] = 0;
+		for (int j = 1; j < sizeOfSStr; j++)
 			lcsLength[0][j] = 0;
 		// recurrence expression
-		for (int i = 1; i < sizeOfFStr; i++){
+		for (int i = 1; i < sizeOfFStr; i++) {
 			for (int j = 1; j < sizeOfSStr; j++) {
 				if (firstStr[i] == secondStr[j])
 					lcsLength[i][j] = lcsLength[i - 1][j - 1] + 1;
 				else
 					lcsLength[i][j] = Math.max(lcsLength[i][j - 1],
 							lcsLength[i - 1][j]);
-				
+
 			}
 		}
-		
-		return lcsLength[sizeOfFStr - 1][sizeOfSStr - 1];
+		return lcsLength;
+	}
+
+	/**
+	 * backtracks the choices when computing the lcsLength table.
+	 * 
+	 * @param lcsLength
+	 * @param firstStr
+	 * @param secondStr
+	 * @param i
+	 * @param j
+	 */
+	public static void printLCS(int[][] lcsLength, char[] firstStr,
+			char[] secondStr, int i, int j) {
+
+		if (i == 0 || j == 0)
+			return;
+		else if (firstStr[i] == secondStr[j]) {
+			printLCS(lcsLength, firstStr, secondStr, i - 1, j - 1);
+			System.out.print(firstStr[i]);
+		} else {
+			if (lcsLength[i][j - 1] > lcsLength[i - 1][j]) {
+				printLCS(lcsLength, firstStr, secondStr, i, j - 1);
+			} else {
+				printLCS(lcsLength, firstStr, secondStr, i - 1, j);
+			}
+		}
+
 	}
 }
