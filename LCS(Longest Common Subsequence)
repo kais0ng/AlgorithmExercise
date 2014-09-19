@@ -4,7 +4,7 @@ Longest common subsequence problem,
 It is a classic computer science problem, the basis of file comparison programs such as diff, and has applications in bioinformatics.
 	
 
-Java Code below is the solution for two sequences(using Dynamic Programming),
+Java Code below is the solution for two sequences(using Dynamic Programming), time complexity of this solution is O(mn).
 
 
 
