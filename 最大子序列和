@@ -1,0 +1,36 @@
+问题综述：
+  输入一组整数，求出这组整数子序列中的最大值， 例如，-6 2 4 -7 5 3 2 -1 6 -9 10 -2，则最大子序列和为16。
+
+解法：时间复杂度为O(n)
+
+
+package com.kai.dynamicProgramming;
+
+/**
+ * 
+ * @author kaisong 最大子序列和问题（classical dynamic programming） 
+ */
+public class MaxSumOfSubsequence {
+
+	public static void main(String[] args) {
+		int[] array = { -6, 2, 4, -7, 5, 3, 2, -1, 6, -9, 10, -2 };
+		int result = getMaxSumOfSubsequence(array);
+
+		System.out.println("The maximum sum of subsequence: " + result);
+	}
+
+	public static int getMaxSumOfSubsequence(int[] array) {
+		int size = array.length;
+		int[] sum = new int[size];
+		// initial status
+		sum[0] = array[0];
+		// recurrence expression
+		for (int i = 1; i < size; i++)
+			sum[i] = Math.max(sum[i - 1] + array[i], array[i]);
+		// get the maximum sum of subsequence
+		int result = sum[0];
+		for (int i = 1; i < size; i++)
+			result = Math.max(result, sum[i]);
+		return result;
+	}
+}
