@@ -1,0 +1,41 @@
+package com.kai.dynamicProgramming;
+
+/**
+ * LCS(i,j) represents the set of LCS of prefixes Xi and Yj
+ * 
+ * @author kaisong
+ * 
+ */
+public class LCS {
+
+	public static void main(String[] args) {
+		char[] firstStr = { 'X', 'M', 'J', 'Y', 'A', 'U', 'Z' };
+		char[] secondStr = { 'M', 'Z', 'J', 'A', 'W', 'X','U' };
+		int lcsLength = getLCSLength(firstStr, secondStr);
+		System.out.println("the length of LCS: " + lcsLength);
+	}
+
+	public static int getLCSLength(char[] firstStr, char[] secondStr) {
+		int sizeOfFStr = firstStr.length;
+		int sizeOfSStr = secondStr.length;
+		int[][] lcsLength = new int[sizeOfFStr][sizeOfSStr];
+		// initial status
+		for (int i = 0; i < sizeOfFStr; i++)
+			lcsLength[i][0] = 0; 	
+		for (int j = 0; j < sizeOfSStr; j++)
+			lcsLength[0][j] = 0;
+		// recurrence expression
+		for (int i = 1; i < sizeOfFStr; i++){
+			for (int j = 1; j < sizeOfSStr; j++) {
+				if (firstStr[i] == secondStr[j])
+					lcsLength[i][j] = lcsLength[i - 1][j - 1] + 1;
+				else
+					lcsLength[i][j] = Math.max(lcsLength[i][j - 1],
+							lcsLength[i - 1][j]);
+				
+			}
+		}
+		
+		return lcsLength[sizeOfFStr - 1][sizeOfSStr - 1];
+	}
+}
