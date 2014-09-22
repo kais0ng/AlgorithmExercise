@@ -1,0 +1,28 @@
+完数的概念：
+
+如果一个数恰好等于它的因子之和，则称该数为“完全数”
+
+Java code：
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PerfectNumber {
+	public static void main(String[] args) {
+		System.out.println(findPerfectNum(1000));
+	}
+
+	public static List<Integer> findPerfectNum(int num) {
+		List<Integer> perfectNums = new ArrayList<Integer>();
+		for (int i = 1; i < num; i++) {
+			int sum = 0;
+			for (int j = 1; j < i; j++) {
+				if (i % j == 0)
+					sum += j;
+			}
+			if (sum == i)
+				perfectNums.add(i);
+		}
+		return perfectNums;
+	}
+}
