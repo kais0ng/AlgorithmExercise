@@ -1,0 +1,53 @@
+package com.kai.dynamicProgramming;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 数字串，全为0,1组合而成。求一个最长的连续子串，其中0和1的个数相等。 
+ * 比如: 01100111 --> 011001 
+ * 110000011 --> 1100 / 0011 
+ * @author kaisong
+ * 方法： 
+ * 定义一个数组a，a[0] = 0 
+ * 然后遍历输入输入数字串，遇到0，减1，遇到1，加1。含义就是，到目前位置，净值出现了多少个0或者1. 
+ * 在数组a中选择两个相等的值，比如都是-3，第一个-3表示到该元素为止，多出现了3个0，第二个-3还是表示 
+ * 到该元素为止，多出3个0，那么这两个元素之间的0和1的个数必定相互抵消。 
+ * 于是，所求子串等同于，数组a中距离最远的两个相同值。
+ * 
+ */
+public class MaxEqualityOfSubstring {
+	public static void main(String[] args) {
+		int[] array = {1,0,0,0,0,0,1,1};
+		findSubstring(array);
+		
+	}
+
+	public static void findSubstring(int[] array) {
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		int current = 0;
+		int start = 0;
+		int maxOfDistance = 0;
+		// 遇0减1，遇1加1
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == 0) {
+				current--;
+			} else {
+				current++;
+			}
+			Integer value = map.get(current);
+			if (value == null) {
+				map.put(current, i);
+			} else {
+				if (maxOfDistance < i - map.get(current)) {
+					maxOfDistance = i - map.get(current);
+					start = map.get(current);
+				}
+			}
+		}
+		for (int i = start+1; i <= start + maxOfDistance; i++) {
+			System.out.print(array[i]);
+
+		}
+	}
+}
