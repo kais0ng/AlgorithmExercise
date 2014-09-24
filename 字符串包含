@@ -62,4 +62,74 @@ public class StringContain {
 
 解法二：
 
+Java Code 如下：
+
+import java.util.Random;
+
+public class StringContain {
+
+	public static void main(String[] args) {
+		String A = "ABBCD";
+		String B = "BAE";
+		System.out.println(stringContains(A, B));
+	}
+
+	public static boolean stringContains(String A, String B) {
+		char[] arrayA = new char[A.length()];
+		char[] arrayB = new char[B.length()];
+		for (int i = 0; i < A.length(); i++)
+			arrayA[i] = A.charAt(i);
+		for (int i = 0; i < B.length(); i++)
+			arrayB[i] = B.charAt(i);
+		// sort A and B by Quicksort
+		QuickSort.quickSort(arrayA, 0, arrayA.length - 1);
+		QuickSort.quickSort(arrayB, 0, arrayB.length - 1);
+		int i, j;
+		for (i = 0, j = 0; j < arrayB.length && i < arrayA.length;) {
+			
+			if(arrayA[i] < arrayB[j])
+				i++;
+			else 
+				j++;
+		}
+		if (j == arrayB.length)
+			return true;
+		return false;
+	}
+}
+
+class QuickSort {
+	public static void quickSort(char[] array, int left, int right) {
+		if (left >= right)
+			return;
+		int p = partition(array, left, right);
+		quickSort(array, left, p - 1);
+		quickSort(array, p + 1, right);
+	}
+
+	private static int partition(char[] array, int left, int right) {
+		int pivotIndex = new Random().nextInt(right) % (right - left + 1)
+				+ left;
+		char pivotValue = array[pivotIndex];
+		// swap pivot and right element
+		array[pivotIndex] = array[right];
+		array[right] = pivotValue;
+		int storedIndex = left;
+		for (int i = left; i < right; i++) {
+			if (array[i] < pivotValue) {
+				char temp = array[i];
+				array[i] = array[storedIndex];
+				array[storedIndex] = temp;
+				storedIndex++;
+			}
+		}
+		// move pivot to the final place
+		array[right] = array[storedIndex];
+		array[storedIndex] = pivotValue;
+		return storedIndex;
+	}
+}
+
+同样假设字符串A的长度是m，B的长度是n，那么用快速排序对两者的时间开销分别为O(mlgm)和O(nlgn)，之后的线性扫描需要O(m+n)次操作。
+因此，该解法的时间复杂度为O(mlgm)+O(nlgn)+O(m+n)，即O(max(mlgm, nlgn, m+n))。
 
