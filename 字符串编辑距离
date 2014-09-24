@@ -10,3 +10,60 @@
 
 写一个程序，返回最小操作数，使得对源串进行这些操作之后等于目标串，源串和目标串长度都小于2000。
 
+Java 实现代码如下（两种方法）：
+
+方法一. 采用递归
+
+方法二. 采用DP
+
+
+public class LevenshteinDistance {
+
+	public static void main(String[] args) {
+		char[] firstArr = { 's', 'a', 't', 'u', 'r', 'd', 'a', 'y' };
+		char[] secondArr = { 's', 'u', 'n', 'd', 'a', 'y' };
+		System.out.println(getLevenshteinDistanceByRecursion(firstArr,
+				firstArr.length, secondArr, secondArr.length));
+		char[] firstArray = { ' ', 's', 'a', 't', 'u', 'r', 'd', 'a', 'y' };
+		char[] secondArray = { ' ', 's', 'u', 'n', 'd', 'a', 'y' };
+		System.out.println(getLevenshteinDistanceByDP(firstArray, secondArray));
+	}
+
+	/* recursive implement */
+	public static int getLevenshteinDistanceByRecursion(char[] firstArr,
+			int firstLen, char[] secondArr, int secondLen) {
+		if (firstLen == 0 || secondLen == 0) {
+			return Math.max(firstLen, secondLen);
+		}
+		int min = Math.min(
+				getLevenshteinDistanceByRecursion(firstArr, firstLen - 1,
+						secondArr, secondLen) + 1,
+				getLevenshteinDistanceByRecursion(firstArr, firstLen,
+						secondArr, secondLen - 1) + 1);
+		min = Math
+				.min(getLevenshteinDistanceByRecursion(firstArr, firstLen - 1,
+						secondArr, secondLen - 1)
+						+ (firstArr[firstLen - 1] == secondArr[secondLen - 1] ? 0
+								: 1), min);
+		return min;
+	}
+
+	/* DP implement */
+	public static int getLevenshteinDistanceByDP(char[] firstArr,
+			char[] secondArr) {
+		int[][] table = new int[firstArr.length][secondArr.length];
+		// initial status
+		for (int i = 0; i < firstArr.length; i++)
+			table[i][0] = i;
+		for (int j = 0; j < secondArr.length; j++)
+			table[0][j] = j;
+		// status equation
+		for (int i = 1; i < firstArr.length; i++)
+			for (int j = 1; j < secondArr.length; j++) {
+				int min = Math.min(table[i - 1][j] + 1, table[i][j - 1] + 1);
+				table[i][j] = Math.min(min, table[i - 1][j - 1]
+						+ (firstArr[i] == secondArr[j] ? 0 : 1));
+			}
+		return table[firstArr.length - 1][secondArr.length - 1];
+	}
+}
