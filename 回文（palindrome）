@@ -3,3 +3,35 @@
 回文，英文palindrome，指一个顺着读和反过来读都一样的字符串，比如madam、我爱我。
 
 判断一个字符串是否是回文？
+public class Palindrome {
+	
+	public static void main(String[] args){
+		System.out.println(checkPalindrome("abcdefedcba"));
+	}
+	
+	public static boolean checkPalindrome(String str) {
+		int length = str.length();
+		int mid = length / 2 - 1;
+		/* intiate stack */
+		char[] stack = new char[str.length()];
+		int top = 0;
+
+		for (int i = 0; i <= mid; i++)
+			stack[++top] = str.charAt(i);
+		/* check if the length of str is even*/
+		int next = mid + 2;
+		if (length % 2 == 0)
+			next = mid + 1;
+		for (int i = next; i < length; i++) {
+			if (str.charAt(i) != stack[top])
+				break;
+			top--;
+		}
+		if (top == 0)
+			return true;
+		else
+			return false;
+
+	}
+}
+
